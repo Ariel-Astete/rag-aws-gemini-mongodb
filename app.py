@@ -102,6 +102,14 @@ Responde de forma concisa y clara en español."""
 st.set_page_config(page_title="Chat PDF con MongoDB + Gemini", page_icon="💬")
 st.title("💬 Chatbot de tu PDF (MongoDB + Gemini)")
 
+# Seleccionar la cantidad de fragmentos recuperados
+k = st.selectbox(
+    "Cantidad de fragmentos a recuperar (k)",
+    options=[3, 5, 10],
+    index=1
+)
+
+
 if "historial" not in st.session_state:
     st.session_state.historial = []
 
@@ -123,7 +131,7 @@ if pregunta:
         with st.spinner("Buscando respuesta..."):
             try:
                 emb = crear_embedding(pregunta)
-                similares = buscar_similares(emb, k=5)
+                similares = buscar_similares(emb, k=k)
 
                 if not similares:
                     respuesta = "No encontré información relevante en el documento."
